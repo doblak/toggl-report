@@ -1,0 +1,15 @@
+var config = {}
+
+//available in your toggl profile
+config.apiToken = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+config.since = '2014-09-01';
+config.until = '2014-09-30';
+//you can find that in your toggl browser URL
+config.workspaceId = 'xxxxxx';
+config.pricePerHour = '100';
+
+config.projectTagToProjectNameAndIdLookup = {
+    'label in toggl': ['project name for export', 'project id for export']
+};
+
+module.exports = config;
