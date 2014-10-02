@@ -58,35 +58,6 @@ function exportData() {
         colWidths: [12, 7, 60, 15, 6, 5]
     });
 
-    //START: soon to be obsolete code: merge lunches
-    togglReportDataByDate = _.groupBy(togglReportData, function(entry) {
-        return moment(entry.start).format('DD.MM.YYYY');
-    });
-
-    _.each(togglReportDataByDate, function(dailyEntries) {
-        var lunchEntry = _.findWhere(dailyEntries, function(entry) {
-            return entry.project === 'lunch';
-        });
-
-        if (_.isUndefined(lunchEntry) || moment(lunchEntry.start).weekday() === 6)
-            return;
-        //console.log(dailyEntries);
-
-        var longestEntry = _.first(_.sortBy(dailyEntries, function(entry) {
-            //console.log(entry);
-
-            if (entry.id === lunchEntry.id)
-                return -1;
-            return entry.dur;
-            //return moment(entry.end).diff(moment(entry.start));
-        }));
-
-        console.log(moment(longestEntry.start).format('YYYY-DD-MM') + ": " + moment(longestEntry.end).format("h:mm"));
-        longestEntry.end = moment(longestEntry.end).add(0.5, 'h');
-        console.log("              -->" + moment(longestEntry.end).format("h:mm"));
-    });
-    //END: soon to be obsolete code: merge lunches
-
     var exportTimeEntries = [];
     _.each(togglReportData, function(entry) {
 
@@ -99,10 +70,7 @@ function exportData() {
             config.projectTagToProjectNameAndIdLookup[entry.project] ? config.projectTagToProjectNameAndIdLookup[entry.project][1] : "?",
         ];
 
-        //remove conditional export later
-        if (entry.project !== 'lunch') {
-            exportTimeEntries.push(tableEntry);
-        }
+        exportTimeEntries.push(tableEntry);
     });
 
     //group by costcenter/project
