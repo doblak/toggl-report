@@ -14,4 +14,4 @@ Configuring
 Usage
 -----------
 - set the timespan that you would like to report
-- node ./report.js & away
+- `node ./report.js` & away
