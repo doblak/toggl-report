@@ -1,5 +1,8 @@
 var config = require('./config')
+
+//https://github.com/7eggs/node-toggl-api
 var TogglClient = require('toggl-api');
+
 var toggl = new TogglClient({
     apiToken: config.apiToken
 });
@@ -12,6 +15,8 @@ var moment = require('moment');
 var togglReportData = [];
 
 //recursively query all pages and fill togglReportData with time entries
+//https://github.com/toggl/toggl_api_docs/blob/master/reports/detailed.md
+//https://github.com/toggl/toggl_api_docs/blob/master/reports.md#request-parameters
 var getTogglReportData = function(page) {
     toggl.detailedReport({
         workspace_id: config.workspaceId,
