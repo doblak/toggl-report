@@ -7,7 +7,7 @@ Configuring
 
 - copy the draft config to config.js
 - set any preferences:
-  - set your toggl API token
+  - set your [toggl API token](https://www.toggl.com/app/profile)
   - set your workspaceId
   - set your project->project name & id map
 
