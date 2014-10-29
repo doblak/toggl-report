@@ -63,6 +63,16 @@ function exportData() {
         colWidths: [12, 7, 60, 15, 6, 5]
     });
 
+    //count tags
+    var tagsCount = {};
+    _.each(togglReportData, function(entry) {
+        _.each(entry.tags, function(tag) {
+            if(_.isUndefined(tagsCount[tag]))
+                tagsCount[tag] = 0;
+            tagsCount[tag]++;
+        });
+    });
+
     var exportTimeEntries = [];
     _.each(togglReportData, function(entry) {
 
@@ -124,6 +134,12 @@ function exportData() {
     });
 
     console.log(table.toString());
+    
+    console.log("--- Tag count ---");
+    _.each(tagsCount , function(count, tagName) {
+        console.log(tagName + ": " + count);
+    });
+    console.log("-----------------");
 
     var ws_name = moment(config.since).year() + '-' + moment(config.since).format('MM');
 
