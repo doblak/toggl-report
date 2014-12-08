@@ -1,56 +1,12 @@
-var config = require('./config')
+var config = require('./config');
 
-//https://github.com/7eggs/node-toggl-api
-var TogglClient = require('toggl-api');
-
-var toggl = new TogglClient({
-    apiToken: config.apiToken
-});
 var Table = require('cli-table');
 var _ = require('underscore');
 _.str = require('underscore.string');
 var XLSX = require('XLSX');
 var moment = require('moment');
 
-var togglReportData = [];
-
-//recursively query all pages and fill togglReportData with time entries
-//https://github.com/toggl/toggl_api_docs/blob/master/reports/detailed.md
-//https://github.com/toggl/toggl_api_docs/blob/master/reports.md#request-parameters
-var getTogglReportData = function(page) {
-    toggl.detailedReport({
-        workspace_id: config.workspaceId,
-        since: config.since,
-        until: config.until,
-        //order_field: 'date', //currently sorting doesn't work
-        //order_desc: 'off',
-        page: page
-    }, function(err, report) {
-        if (err !== null)
-            console.log("Err:", err);
-        console.log("total_count: ", report.total_count);
-        console.log("per_page: ", report.per_page);
-        console.log('acquired page: ' + page);
-        //print the whole JSON response:
-        //console.log("Report: %j", report);
-
-        //concatenate pages
-        togglReportData = togglReportData.concat(report.data);
-
-        if (page * report.per_page < report.total_count) {
-            //request another page
-            getTogglReportData(page + 1);
-        } else {
-            //fineshed, process data
-            toggl.destroy();
-            exportData();
-        }
-    });
-};
-
-getTogglReportData(1);
-
-function exportData() {
+function exportXlsx(togglReportData, callback) {
 
     togglReportData = _.sortBy(togglReportData, function(entry) {
         return moment(entry.start).unix();
@@ -67,9 +23,9 @@ function exportData() {
     var tagsCount = {};
     _.each(togglReportData, function(entry) {
         _.each(entry.tags, function(tag) {
-            if(_.isUndefined(tagsCount[tag]))
+            if (_.isUndefined(tagsCount[tag]))
                 tagsCount[tag] = 0;
-            tagsCount[tag]++;
+            tagsCount[tag] ++;
         });
     });
 
@@ -114,10 +70,10 @@ function exportData() {
     });
 
     exportTimeEntries = [
-        [moment(config.since).year() + '-' + moment(config.since).format('MM')],
-        [],
-        ['Date', 'Hrs', 'Work Item', '', 'Cost center', 'Project']
-    ].concat(exportTimeEntries)
+            [moment(config.from).year() + '-' + moment(config.from).format('MM')],
+            [],
+            ['Date', 'Hrs', 'Work Item', '', 'Cost center', 'Project']
+        ].concat(exportTimeEntries)
         .concat([
             ['SUM', '=SUM(B4:B' + (3 + exportTimeEntries.length) + ')'],
             [],
@@ -134,14 +90,14 @@ function exportData() {
     });
 
     console.log(table.toString());
-    
+
     console.log("--- Tag count ---");
-    _.each(tagsCount , function(count, tagName) {
+    _.each(tagsCount, function(count, tagName) {
         console.log(tagName + ": " + count);
     });
     console.log("-----------------");
 
-    var ws_name = moment(config.since).year() + '-' + moment(config.since).format('MM');
+    var ws_name = moment(config.from).year() + '-' + moment(config.from).format('MM');
 
     function Workbook() {
         if (!(this instanceof Workbook)) return new Workbook();
@@ -158,6 +114,8 @@ function exportData() {
 
     /* write file */
     XLSX.writeFile(wb, ws_name + '.xlsx');
+
+    callback(null, 'Successfully exported to xlsx.');
 }
 
 //credits: https://github.com/SheetJS/js-xlsx/blob/master/tests/write.js (a bit modified)
@@ -224,3 +182,6 @@ function datenum(v, date1904) {
     var epoch = Date.parse(v);
     return (epoch - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000);
 }
+
+this.exportXlsx = exportXlsx;
+module.exports = this;

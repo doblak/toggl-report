@@ -2,14 +2,22 @@ var config = {}
 
 //available in your toggl profile
 config.apiToken = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
-config.since = '2014-09-01';
-config.until = '2014-09-30';
+config.from = '2014-09-01';
+config.to = '2014-09-30';
 //you can find that in your toggl browser URL
 config.workspaceId = 'xxxxxx';
 config.pricePerHour = '100';
 
+config.timeTrackerBaseUrl = 'http://timetracker.xxxxxxxxx.com/';
+config.timeTrackerUsername = 'firstname.lastname';
+config.timeTrackerPassword = 'xxxxxxxx';
+
 config.projectTagToProjectNameAndIdLookup = {
-    'project name in toggl': ['project name for export', 'project id for export']
+    'project name in toggl (standalone word or the word before slash)': ['project name for export without leading number and dash', 'project id for export']
+};
+
+config.taskTagToTaskNameAndIdLookup = {
+    'tag name in toogl (the word after slash)': ['task name for export without leading number and dash', 'task id for export']
 };
 
 module.exports = config;
