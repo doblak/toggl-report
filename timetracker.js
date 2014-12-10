@@ -196,7 +196,7 @@ function ttPostEntries(callback) {
         console.log("lookup: " + entry.project);
         var togglProjectString = _.str.words(entry.project, "/")[0];
         console.log("togglProjectString: " + togglProjectString);
-        var togglTagString = _.str.include(entry.project, '/') ? _.words(entry.project, "/")[1] : 'swdev';
+        var togglTagString = _.str.include(entry.project, '/') ? _.str.words(entry.project, "/")[1] : 'swdev';
         console.log("togglTagString: " + togglTagString);
         if(config.projectTagToProjectNameAndIdLookup[togglProjectString]){
             var configProjectId = parseInt(config.projectTagToProjectNameAndIdLookup[togglProjectString][1]);

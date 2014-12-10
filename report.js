@@ -31,14 +31,16 @@ function exportXlsx(togglReportData, callback) {
 
     var exportTimeEntries = [];
     _.each(togglReportData, function(entry) {
+        var togglProjectString = _.str.words(entry.project, "/")[0];
+        var togglTagString = _.str.include(entry.project, '/') ? _.str.words(entry.project, "/")[1] : 'swdev';
 
         var tableEntry = [
             moment(entry.start).format('DD.MM.YYYY'),
             moment(entry.end).diff(moment(entry.start), 'hours', true),
             entry.description,
-            config.projectTagToProjectNameAndIdLookup[entry.project] ? config.projectTagToProjectNameAndIdLookup[entry.project][0] : "?",
-            7100,
-            config.projectTagToProjectNameAndIdLookup[entry.project] ? config.projectTagToProjectNameAndIdLookup[entry.project][1] : "?",
+            config.projectTagToProjectNameAndIdLookup[togglProjectString] ? config.projectTagToProjectNameAndIdLookup[togglProjectString][0] : "?",
+            config.projectTagToProjectNameAndIdLookup[togglTagString] ? config.projectTagToProjectNameAndIdLookup[togglTagString][1] : "?",
+            config.projectTagToProjectNameAndIdLookup[togglProjectString] ? config.projectTagToProjectNameAndIdLookup[togglProjectString][1] : "?",
         ];
 
         exportTimeEntries.push(tableEntry);
