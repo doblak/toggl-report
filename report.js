@@ -39,7 +39,7 @@ function exportXlsx(togglReportData, callback) {
             moment(entry.end).diff(moment(entry.start), 'hours', true),
             entry.description,
             config.projectTagToProjectNameAndIdLookup[togglProjectString] ? config.projectTagToProjectNameAndIdLookup[togglProjectString][0] : "?",
-            config.projectTagToProjectNameAndIdLookup[togglTagString] ? config.projectTagToProjectNameAndIdLookup[togglTagString][1] : "?",
+            config.taskTagToTaskNameAndIdLookup[togglTagString] ? config.taskTagToTaskNameAndIdLookup[togglTagString][1] : "?",
             config.projectTagToProjectNameAndIdLookup[togglProjectString] ? config.projectTagToProjectNameAndIdLookup[togglProjectString][1] : "?",
         ];
 
