@@ -7,6 +7,8 @@ config.to = '2014-09-30';
 //you can find that in your toggl browser URL
 config.workspaceId = 'xxxxxx';
 config.pricePerHour = '100';
+//user ids (numeric) separated by comma (optional):
+//config.userIds = 'xxxxxxx';
 
 config.timeTrackerBaseUrl = 'http://timetracker.xxxxxxxxx.com/';
 config.timeTrackerUsername = 'firstname.lastname';

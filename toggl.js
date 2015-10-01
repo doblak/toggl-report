@@ -22,6 +22,7 @@ function getData(callback, pageParam) {
         workspace_id: config.workspaceId,
         since: config.from,
         until: config.to,
+        user_ids: config.userIds,
         //order_field: 'date', //currently sorting doesn't work
         //order_desc: 'off',
         page: page
