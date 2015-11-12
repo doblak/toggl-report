@@ -25,7 +25,7 @@ function exportXlsx(togglReportData, callback) {
         _.each(entry.tags, function(tag) {
             if (_.isUndefined(tagsCount[tag]))
                 tagsCount[tag] = 0;
-            tagsCount[tag] ++;
+            tagsCount[tag]++;
         });
     });
 
@@ -60,7 +60,7 @@ function exportXlsx(togglReportData, callback) {
         }, 0);
         var rowNb = 3 + exportTimeEntries.length + 6 + sumRowCounter++;
         var sumEntry = [
-            '',
+            groupEntries[0][3],
             sum,
             config.pricePerHour + ' €',
             '=B' + rowNb + '*C' + rowNb,
@@ -84,7 +84,10 @@ function exportXlsx(togglReportData, callback) {
             ['Project / Work Item', 'Hours', 'Price/hour', 'Total', 'Cost center', 'Project']
         ]).concat(exportSumEntries)
         .concat([
-            ['Total', '', '', '=SUM(D' + (3 + exportTimeEntries.length + 5 + 1) + ':D' + (3 + exportTimeEntries.length + 5 + exportSumEntries.length) + ')']
+            ['Total',
+            '=SUM(B' + (3 + exportTimeEntries.length + 5 + 1) + ':B' + (3 + exportTimeEntries.length + 5 + exportSumEntries.length) + ')',
+            '',
+            '=SUM(D' + (3 + exportTimeEntries.length + 5 + 1) + ':D' + (3 + exportTimeEntries.length + 5 + exportSumEntries.length) + ')']
         ]);
 
     _.each(exportTimeEntries, function(entry) {
