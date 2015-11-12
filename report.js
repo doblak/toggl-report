@@ -3,7 +3,7 @@ var config = require('./config');
 var Table = require('cli-table');
 var _ = require('underscore');
 _.str = require('underscore.string');
-var XLSX = require('XLSX');
+var XLSX = require('xlsx');
 var moment = require('moment');
 
 function exportXlsx(togglReportData, callback) {
