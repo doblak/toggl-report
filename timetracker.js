@@ -193,6 +193,7 @@ function ttPostEntries(callback) {
         var todayFormatted = moment().format('YYYY-MM-DD');
         var projectId = null;
         var taskId = null;
+        console.log("entry: " + entryDateFormatted + ", " + entry.description);
         console.log("lookup: " + entry.project);
         var togglProjectString = _.str.words(entry.project, "/")[0];
         console.log("togglProjectString: " + togglProjectString);
@@ -230,7 +231,7 @@ function ttPostEntries(callback) {
                     error: null,
                     response: {},
                     body: null
-                }, 'Could not map project/task: ' + entry.project);
+                }, 'Could not map project/task: ' + entry.project + ", date: " + entryDateFormatted + ", description: " + entry.description + ", duration: " + moment(entry.end).diff(moment(entry.start), 'hours', true));
             return;
         }
 
